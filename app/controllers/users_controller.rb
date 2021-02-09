@@ -15,7 +15,7 @@ class UsersController < ApplicationController
   end
   def show
     @user = User.find(params[:id])
-    @articles = @user.articles
+    @articles = @user.articles.paginate(page: params[:page], per_page: 2)
   end
   def edit
     @user = User.find(params[:id])
@@ -25,11 +25,18 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     if @user.update(whitelist)
       flash[:notice] = "Profile was Updated successfully."
-      redirect_to articles_path
+      redirect_to @user
     else
       render 'edit'
     end
   end
+
+  def index 
+    @users = User.paginate(page: params[:page], per_page: 3)
+  end
+
+  private
+
   def whitelist
     params.require(:user).permit(:username, :email, :password)
   end
