@@ -70,7 +70,7 @@ class ArticlesController < ApplicationController
   end
   
   def whitelist
-    params.require(:article).permit(:title,:description,:author)
+    params.require(:article).permit(:title,:description,:author, category_ids: [])
   end
 
 end
